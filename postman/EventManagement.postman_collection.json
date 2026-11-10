@@ -1,0 +1,1219 @@
+{
+  "info": {
+    "name": "Event Management API v2",
+    "description": "Import into Postman. Start the app first. Default login: admin/admin123 (collection auth).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{adminUser}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{adminPass}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "adminUser",
+      "value": "admin"
+    },
+    {
+      "key": "adminPass",
+      "value": "admin123"
+    },
+    {
+      "key": "userUser",
+      "value": "user"
+    },
+    {
+      "key": "userPass",
+      "value": "user123"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 Public (no login)",
+      "item": [
+        {
+          "name": "Actuator health [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/health",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Actuator info [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/info",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "OpenAPI JSON [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/v3/api-docs",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Setup data (ADMIN)",
+      "item": [
+        {
+          "name": "Create organizer [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/organizers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Asha\",\n  \"email\": \"asha@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create venue [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/venues",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hall A\",\n  \"address\": \"Hyderabad\",\n  \"capacity\": 100\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create event [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Tech Conf\",\n  \"startTime\": \"2030-01-01T09:00:00\",\n  \"endTime\": \"2030-01-01T17:00:00\",\n  \"maxCapacity\": 2,\n  \"organizerId\": 1,\n  \"venueId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create past event for scheduler demo [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Old Meetup\",\n  \"startTime\": \"2020-01-01T09:00:00\",\n  \"endTime\": \"2020-01-01T17:00:00\",\n  \"maxCapacity\": 10,\n  \"organizerId\": 1,\n  \"venueId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Within a minute the scheduler marks this event COMPLETED (check the console log and GET /api/events/2)."
+          }
+        },
+        {
+          "name": "Create attendee Ben [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/attendees",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ben\",\n  \"email\": \"ben@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create attendee Cara [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/attendees",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cara\",\n  \"email\": \"cara@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create attendee Dev [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/attendees",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dev\",\n  \"email\": \"dev@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Duplicate organizer email [409]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/organizers",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Asha\",\n  \"email\": \"asha@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List organizers (paginated) [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/organizers?page=0&size=5"
+          }
+        },
+        {
+          "name": "List venues (paginated) [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/venues?page=0&size=5"
+          }
+        },
+        {
+          "name": "List attendees (paginated) [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/attendees?page=0&size=5"
+          }
+        }
+      ],
+      "description": "Run these first, in order, on a freshly started app (ids assume 1, 2, 3)."
+    },
+    {
+      "name": "03 Registration and capacity",
+      "item": [
+        {
+          "name": "Register Ben [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events/1/registrations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attendeeId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Capacity after 1 [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1/capacity"
+          }
+        },
+        {
+          "name": "Register Cara [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events/1/registrations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attendeeId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Event full - Dev [409]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events/1/registrations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attendeeId\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Duplicate registration [409]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events/1/registrations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"attendeeId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Capacity after 2 (full) [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1/capacity"
+          }
+        },
+        {
+          "name": "List registrations (paginated) [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1/registrations?page=0&size=5"
+          }
+        },
+        {
+          "name": "JPQL search registrations by name [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1/registrations/search?name=ben"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Sessions and enrollment",
+      "item": [
+        {
+          "name": "Create session [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events/1/sessions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Keynote\",\n  \"startTime\": \"2030-01-01T10:00:00\",\n  \"endTime\": \"2030-01-01T11:00:00\",\n  \"capacity\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Session outside event window [400]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events/1/sessions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Late\",\n  \"startTime\": \"2030-01-01T20:00:00\",\n  \"endTime\": \"2030-01-01T21:00:00\",\n  \"capacity\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Enroll Ben [200]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/sessions/1/enroll?attendeeId=1"
+          }
+        },
+        {
+          "name": "Session full - enroll Cara [409]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/sessions/1/enroll?attendeeId=2"
+          }
+        },
+        {
+          "name": "Not registered - enroll Dev [400]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/sessions/1/enroll?attendeeId=3"
+          }
+        },
+        {
+          "name": "List sessions (paginated) [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1/sessions?page=0&size=5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Events: CRUD, pagination, sorting, queries",
+      "item": [
+        {
+          "name": "Get event 1 - first call hits DB [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1"
+          }
+        },
+        {
+          "name": "Get event 1 - second call served from cache [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1"
+          }
+        },
+        {
+          "name": "Pagination page 0 size 1 [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events?page=0&size=1"
+          }
+        },
+        {
+          "name": "Pagination page 1 size 1 [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events?page=1&size=1"
+          }
+        },
+        {
+          "name": "Sorting title ascending [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events?sort=title,asc"
+          }
+        },
+        {
+          "name": "Sorting startTime descending [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events?sort=startTime,desc"
+          }
+        },
+        {
+          "name": "Filter by venue [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events?venueId=1&page=0&size=5"
+          }
+        },
+        {
+          "name": "JPQL search by status and dates [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/search?status=PUBLISHED&from=2029-01-01T00:00:00&to=2031-01-01T00:00:00"
+          }
+        },
+        {
+          "name": "Named query by organizer [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/by-organizer?name=Asha"
+          }
+        },
+        {
+          "name": "Native SQL query capacity >= 5 [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/large?minCapacity=5"
+          }
+        },
+        {
+          "name": "Update event 1 [200]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Tech Conf 2030\",\n  \"startTime\": \"2030-01-01T09:00:00\",\n  \"endTime\": \"2030-01-01T17:00:00\",\n  \"maxCapacity\": 5,\n  \"organizerId\": 1,\n  \"venueId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Capacity above venue [400]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Too Big\",\n  \"startTime\": \"2031-01-01T09:00:00\",\n  \"endTime\": \"2031-01-01T17:00:00\",\n  \"maxCapacity\": 500,\n  \"organizerId\": 1,\n  \"venueId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Same venue and start time [409]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Tech Conf\",\n  \"startTime\": \"2030-01-01T09:00:00\",\n  \"endTime\": \"2030-01-01T17:00:00\",\n  \"maxCapacity\": 2,\n  \"organizerId\": 1,\n  \"venueId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Validation error blank title [400]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"\",\n  \"startTime\": \"2032-01-01T09:00:00\",\n  \"endTime\": \"2032-01-01T17:00:00\",\n  \"maxCapacity\": 5,\n  \"organizerId\": 1,\n  \"venueId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Event not found [404]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/999"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Employee API",
+      "item": [
+        {
+          "name": "Create employee Ravi [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/employees",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ravi\",\n  \"email\": \"ravi@example.com\",\n  \"department\": \"IT\",\n  \"salary\": 50000,\n  \"joinDate\": \"2024-01-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create employee Sita [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/employees",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sita\",\n  \"email\": \"sita@example.com\",\n  \"department\": \"HR\",\n  \"salary\": 65000,\n  \"joinDate\": \"2023-06-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create employee Kiran [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/employees",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kiran\",\n  \"email\": \"kiran@example.com\",\n  \"department\": \"IT\",\n  \"salary\": 80000,\n  \"joinDate\": \"2022-03-10\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get employee 1 [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/employees/1"
+          }
+        },
+        {
+          "name": "List employees paginated [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/employees?page=0&size=2"
+          }
+        },
+        {
+          "name": "Sort by salary descending [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/employees?sort=salary,desc"
+          }
+        },
+        {
+          "name": "Filter by department [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/employees?department=IT"
+          }
+        },
+        {
+          "name": "JPQL search keyword [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/employees/search?keyword=ra"
+          }
+        },
+        {
+          "name": "Update employee 1 [200]",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/employees/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ravi Kumar\",\n  \"email\": \"ravi@example.com\",\n  \"department\": \"IT\",\n  \"salary\": 55000,\n  \"joinDate\": \"2024-01-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Duplicate employee email [409]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/employees",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ravi2\",\n  \"email\": \"ravi@example.com\",\n  \"department\": \"IT\",\n  \"salary\": 1000,\n  \"joinDate\": \"2024-01-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Validation error bad email and salary [400]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/employees",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bad\",\n  \"email\": \"not-an-email\",\n  \"department\": \"IT\",\n  \"salary\": -5,\n  \"joinDate\": \"2024-01-15\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete employee 3 [204]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/employees/3"
+          }
+        },
+        {
+          "name": "Employee not found [404]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/employees/999"
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 File upload and download",
+      "item": [
+        {
+          "name": "Upload brochure [200]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1/brochure",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "sample_brochure.pdf"
+                }
+              ]
+            },
+            "description": "In Body > form-data click the file field and choose a PDF, PNG or JPEG (max 5MB)."
+          }
+        },
+        {
+          "name": "Upload wrong file type txt [400]",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1/brochure",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "sample_invalid.txt"
+                }
+              ]
+            },
+            "description": "Uses postman/sample_invalid.txt. Expect 400 Only PDF, PNG or JPEG files are allowed."
+          }
+        },
+        {
+          "name": "Download brochure [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1/brochure",
+            "description": "Use Send and Download to save the file. Content-Disposition is attachment."
+          }
+        },
+        {
+          "name": "Event shows hasBrochure true [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 Security",
+      "item": [
+        {
+          "name": "No login [401]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "USER reads events [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUser}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPass}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "USER tries to create event [403]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/events",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Tech Conf\",\n  \"startTime\": \"2030-01-01T09:00:00\",\n  \"endTime\": \"2030-01-01T17:00:00\",\n  \"maxCapacity\": 2,\n  \"organizerId\": 1,\n  \"venueId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUser}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPass}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "USER tries to delete employee [403]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/employees/1",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUser}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPass}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "USER registers attendee (allowed) [201]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/attendees",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Uma\",\n  \"email\": \"uma@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUser}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPass}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "USER opens actuator metrics [403]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/metrics",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{userUser}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{userPass}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "ADMIN opens actuator metrics [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/metrics"
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 Actuator (ADMIN)",
+      "item": [
+        {
+          "name": "Health with details [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/health"
+          }
+        },
+        {
+          "name": "Metrics list [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/metrics"
+          }
+        },
+        {
+          "name": "Hikari active connections [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/metrics/hikaricp.connections.active"
+          }
+        },
+        {
+          "name": "Hikari max connections [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/metrics/hikaricp.connections.max"
+          }
+        },
+        {
+          "name": "HTTP server requests [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/metrics/http.server.requests"
+          }
+        },
+        {
+          "name": "JVM memory used [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/metrics/jvm.memory.used"
+          }
+        },
+        {
+          "name": "Caches [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/caches"
+          }
+        },
+        {
+          "name": "Scheduled tasks [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/scheduledtasks"
+          }
+        },
+        {
+          "name": "Loggers [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/loggers/com.example.eventmgmt"
+          }
+        },
+        {
+          "name": "Mappings [200]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/actuator/mappings"
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 Cleanup",
+      "item": [
+        {
+          "name": "Delete event 1 [204]",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1"
+          }
+        },
+        {
+          "name": "Get deleted event [404]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/events/1"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Expected status is read from the request name, e.g. 'Create venue [201]'",
+          "const m = pm.info.requestName.match(/\\[(\\d{3})\\]/);",
+          "if (m) {",
+          "  pm.test('Status code is ' + m[1], function () { pm.response.to.have.status(parseInt(m[1], 10)); });",
+          "}"
+        ]
+      }
+    }
+  ]
+}
